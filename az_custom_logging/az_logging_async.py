@@ -3,7 +3,6 @@ import aiohttp
 from az_custom_logging.az_logging import AzCustomLogging
 
 
-#eda-au-nextgen
 class AzCustomLoggingAsync(AzCustomLogging):
 
 	def __init__(self, project_id: str, customer_id: str, shared_key: str, process_info: dict=None):
