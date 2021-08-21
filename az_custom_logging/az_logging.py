@@ -8,7 +8,6 @@ from typing import Optional
 from az_custom_logging.utils.config import CustomLogConfig
 
 
-#eda-au-nextgen
 class AzCustomLogging:
 	__projectId: str
 	_config: object
