@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
 PROJECT_CONFIG = {
-	'test-project': {
-		'log_name': 'myTestCustomLog'
-	}
+  'test-project': {
+    'log_name': 'testCustomLog'
+  }
 }
 
 

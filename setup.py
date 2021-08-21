@@ -27,5 +27,5 @@ if __name__ == '__main__':
             "Topic :: Software Development :: Libraries :: Python Modules",
         ],
         python_requires='>=3.7',
-        install_requires=["requests"],
+        install_requires=["requests", "aiohttp"],
     )

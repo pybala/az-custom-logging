@@ -8,7 +8,7 @@ Find a way to read customer_id and shared_key
 
 
 @dataclass(frozen=True)
-class AuCustomLogConfig:
+class CustomLogConfig:
 	project_id: str
 	customer_id: str
 	shared_key: str
@@ -23,12 +23,12 @@ class AuCustomLogConfig:
 
 	@staticmethod
 	def load_config(project_id: str, customer_id: str, shared_key: str, log_name: str=None):
-		projectConfig = ProjectConfig.load_config(project_id='eda-au-nextgen')
-		resource = AuCustomLogConfig.resource
-		apiVersion = AuCustomLogConfig.api_version
+		projectConfig = ProjectConfig.load_config(project_id=project_id)
+		resource = CustomLogConfig.resource
+		apiVersion = CustomLogConfig.api_version
 		apiUrl = f'https://{customer_id}.ods.opinsights.azure.com{resource}?api-version={apiVersion}'
 
-		return AuCustomLogConfig(
+		return CustomLogConfig(
 			project_id=project_id,
 			customer_id=customer_id,
 			shared_key=shared_key,
