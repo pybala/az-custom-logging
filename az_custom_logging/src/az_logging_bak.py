@@ -5,38 +5,43 @@ import hmac
 import base64
 import requests
 from typing import Optional
-from az_custom_logging.utils.config import CustomLogConfig
+from az_custom_logging.src.utils.config import CustomLogConfig
 
 
 class AzCustomLogging:
-	__projectId: str
-	_config: object
 	__customerId: str
 	__sharedKey: str
+	__logName: str
 	__logType: str
 	__resource: str
+	_config: object
 	_logApi: str
 	contentType: str = 'application/json'
 	logMethod: str = 'POST'
-	appName: str
+	__processInfo: dict
 	processId: str
 	jobName: str
 
-	def __init__(self, project_id: str, customer_id: str, shared_key: str, process_info: dict=None):
-		self.__projectId = project_id
+	def __init__(self, customer_id: str, shared_key: str, log_name: str, process_info: dict):
+		"""
+		ToDo: Validation for log_name
+			  process_info => restrict to defined properties
+			  	- must fields: process_id, job_name
+		"""
 		self.__customerId = customer_id
-		self.__sharedKey = shared_key	
+		self.__sharedKey = shared_key
+		self.__logType = log_name
 		self._config = CustomLogConfig.load_config(
-			project_id=self.__projectId,
 			customer_id=self.__customerId,
-			shared_key=self.__sharedKey
+			shared_key=self.__sharedKey,
+			log_name=self.__logType
 		)
-		self.__logType = self._config.log_name
+		#self.__logType = self._config.log_name
 		self.__resource = self._config.resource
 		self._logApi = self._config.log_api_url
+		self.__processInfo = process_info
 
 		if process_info and len(process_info):
-			self.appName = process_info.get('app_name')
 			self.processId = process_info.get('process_id')
 			self.jobName = process_info.get('job_name')
 
@@ -44,11 +49,9 @@ class AzCustomLogging:
 		logRecord = self._get_log_record(message=message, level=self._config.info_label, **extra_args)
 		return self._log_record(record=logRecord)
 
-
 	def log_error(self, message: str, **extra_args) -> bool:
 		logRecord = self._get_log_record(message=message, level=self._config.error_label, **extra_args)
 		return self._log_record(record=logRecord)
-
 
 	def log_debug(self, message: str, **extra_args) -> bool:
 		logRecord = self._get_log_record(message=message, level=self._config.debug_label, **extra_args)
@@ -58,10 +61,9 @@ class AzCustomLogging:
 		process_args = process_args or {}
 		logRecord = {
 			'level': level or self._config.info_label,
-			'app_name': process_args.get('app_name', self.appName),
-			'process_id': process_args.get('process_id', self.processId),
-			'job_name': process_args.get('job_name', self.jobName),
-			'message': message
+			'message': message,
+			**self.__processInfo,
+			**process_args
 		}
 		return logRecord
 
@@ -93,14 +95,13 @@ class AzCustomLogging:
 		headers = self._get_headers(content_length=len(logRecord))
 
 		try:
-			response = requests.post(self._logApi, data=logRecord, headers=headers)
+			response = requests.post(self._logApi, data=logRecord, headers=headers, timeout=120)
 
 			if (response.status_code >= 200 and response.status_code <= 299):
-				print('logged')
+				#print('logged')
 				return True
 			else:
-				#print(f'Response code: {response.status_code}')
-				print(response.text)
+				#print(response.text)
 				return False
 		except Exception as err:
 			pass

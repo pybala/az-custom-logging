@@ -1,0 +1,4 @@
+requests
+aiohttp
+azure-identity
+azure-keyvault-secrets

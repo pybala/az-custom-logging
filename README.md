@@ -1,26 +1,29 @@
 # Azure Custom Logging using Data collector - Python
 
-Define your project custom log name in project_config.py and use it as project_id to initiate the logging.
-Added support for async as well.
-
 ### How to
 
 ```python
 from az_custom_logging import AzCustomLogging
 
+LOG_NAME = 'testCustomLog'
+#processInfo => Optional
+#   Pass any additional properties you want to log
+#   this will create additional fields, so follow some standards.
 processInfo = {
   'process_id': '<uuid>',
-  'app_name': 'test-app-1',
   'job_name': 'test-job-1'
 }
 cl = AzCustomLogging(
-  project_id='test-project',
   customer_id='<Customer Id from Log Analytics Worksapce>',
   shared_key='<Shared key from Log Analytics Worksapce>',
+  log_name=LOG_NAME, 
   process_info=processInfo
 )
 
 cl.log_info(message='test info log')
+
+#To override existing process_info key for a specific log
+cl.log_info(message='test info log, override job name', extra_args={'job_name': 'test-job-2'})
 ```
 
 ### How to - Async
@@ -31,13 +34,12 @@ from az_custom_logging import AzCustomLoggingAsync
 
 processInfo = {
   'process_id': '<uuid>',
-  'app_name': 'test-app-1',
   'job_name': 'test-job-1'
 }
 cl = AzCustomLoggingAsync(
-  project_id='test-project',
   customer_id='<Customer Id from Log Analytics Worksapce>',
   shared_key='<Shared key from Log Analytics Worksapce>',
+  log_name=LOG_NAME, 
   process_info=processInfo
 )
 

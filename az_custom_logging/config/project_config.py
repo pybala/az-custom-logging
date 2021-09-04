@@ -1,11 +1,14 @@
 from dataclasses import dataclass
 
-PROJECT_CONFIG = {
-  'test-project': {
-    'log_name': 'testCustomLog'
-  }
-}
+"""
+Not used
+"""
 
+PROJECT_CONFIG = {
+	'eda-test-project': {
+		'log_name': 'auNextgenTest'
+	}
+}
 
 @dataclass(frozen=True)
 class ProjectConfig:

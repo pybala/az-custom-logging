@@ -1,6 +1,7 @@
 from os import path
 from setuptools import setup, find_packages
  
+VERSION = "1.0.0"
 curPath = path.abspath(path.dirname(__file__))
 
 with open(path.join(curPath, 'README.md'), encoding='utf-8') as f:
@@ -10,9 +11,9 @@ with open(path.join(curPath, 'README.md'), encoding='utf-8') as f:
 if __name__ == '__main__':
     setup(
         name="az-custom-logging",
-        version="0.0.1",
+        version=VERSION,
         author="Balakumar Parameshwaran",
-        author_email="youcompleteit@gmail.com",
+        author_email="balakumar.parameshwaran@citrix.com",
         description="Package for Azure custom logging",
         long_description=longDescription,
         long_description_content_type="text/markdown",
