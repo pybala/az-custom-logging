@@ -5,8 +5,8 @@ Not used
 """
 
 PROJECT_CONFIG = {
-	'eda-test-project': {
-		'log_name': 'auNextgenTest'
+	'test-project': {
+		'log_name': 'poc_custom_logging'
 	}
 }
 
